@@ -1,0 +1,6 @@
+import org.springframework.validation.*
+model {
+    Errors errors
+    String link
+}
+json g.render(template:"/errors/customErrors", model:[errors:errors, link:link])

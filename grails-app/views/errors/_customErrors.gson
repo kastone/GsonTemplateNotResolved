@@ -1,0 +1,25 @@
+import org.springframework.validation.*
+
+/**
+ * Renders validation errors according to vnd.error: https://github.com/blongden/vnd.error
+ */
+model {
+    Errors errors
+    String link
+}
+
+response.status UNPROCESSABLE_ENTITY
+
+json {
+    Errors errorsObject = (Errors)this.errors
+    def allErrors = errorsObject.allErrors
+    int errorCount = allErrors.size()
+    status "error"
+    message "Validation Failed"
+    total errorCount
+    errors(allErrors) { FieldError errorToRender ->
+        field errorToRender.field
+        error errorToRender.code
+    }
+    link link
+}
